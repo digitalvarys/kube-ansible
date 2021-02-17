@@ -4,7 +4,7 @@
     - name: creating 'ubuntu' user
       user: name=ubuntu append=yes state=present createhome=yes shell=/bin/bash
 
-    - name: 'ubuntu' for passwordless sudo
+    - name: creating 'ubuntu' for passwordless sudo
       lineinfile:
         dest: /etc/sudoers
         line: 'ubuntu ALL=(ALL) NOPASSWD: ALL'
