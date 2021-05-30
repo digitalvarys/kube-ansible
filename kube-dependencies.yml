@@ -23,10 +23,10 @@
       state: present
       filename: 'kubernetes'
     
-    - name: install kubernetes-cni
+   - name: install kubernetes-cni
      apt:
-       name: kubernetes-cni=0.7.5-00
-       state: present
+      name: kubernetes-cni=0.7.5-00
+      state: present
       
    - name: install kubelet
      apt:
