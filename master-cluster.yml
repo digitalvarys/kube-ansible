@@ -1,4 +1,4 @@
-- hosts: master
+- hosts: masters
   become: yes
   tasks:
     - name: Start the cluster
