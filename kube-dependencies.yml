@@ -1,6 +1,9 @@
 - hosts: all
   become: yes
   tasks:
+   - name: Make the Swap inactive
+     command: swapoff -a
+
    - name: Docker Installation
      apt:
        name: docker.io
@@ -22,28 +25,36 @@
       repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
       state: present
       filename: 'kubernetes'
-    
-   - name: install kubernetes-cni
-     apt:
-      name: kubernetes-cni=0.7.5-00
-      state: present
-      
+
    - name: install kubelet
      apt:
-       name: kubelet=1.14.0-00
+       name: kubelet
        state: present
        update_cache: true
 
    - name: install kubeadm
      apt:
-       name: kubeadm=1.14.0-00
+       name: kubeadm
        state: present
+   - name: Creating a daemon json
+     copy:
+      dest: "/etc/docker/daemon1.json"
+      content: |
+       {
+       "exec-opts": ["native.cgroupdriver=systemd"]
+       }
+
+   - name: restarting the docker
+     ansible.builtin.shell: |
+       systemctl daemon-reload
+       systemctl restart docker
+       systemctl restart kubelet
 
 - hosts: masters
   become: yes
   tasks:
    - name: install kubectl
      apt:
-       name: kubectl=1.14.0-00
+       name: kubectl
        state: present
        force: yes
